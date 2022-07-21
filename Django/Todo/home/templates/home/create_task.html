@@ -1,0 +1,29 @@
+{% extends 'home/base.html' %} {% block title %} Add New Task {% endblock %} {% block content %} {% load static %}
+<div class="container">
+    <br><br><br>
+    <p class="section-heading mt-4">Add New Task</p>
+    <hr>
+    <div>
+        <form enctype="multipart/form-data" method="POST" action="" class=" generated-form mb-5 justify-content-center h-100 " required="False">
+            {% csrf_token %}
+
+            {%for field in form%}
+            <div class="cust-form-row ">
+                {{field.errors}}
+
+
+                <label for="{{ field.id_for_label }} ">
+                    {{ field.label }}{% if field.field.required %}:{% endif %}
+                </label><br> {{field}}
+                <br>
+
+            </div>
+            {%endfor%}
+            <div class="form-controls ">
+                <button type="submit " class="btn btn-success mt-1 " href="{%url 'home:index'  %} ">Save</button>
+            </div>
+            
+        </form>
+    </div>
+    </div>
+{% endblock %}
