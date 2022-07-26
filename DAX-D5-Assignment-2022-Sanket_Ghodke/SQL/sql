@@ -1,0 +1,65 @@
+
+SELECT CustomerId,
+FirstName,
+LastName,
+city
+FROM customers
+WHERE FirstName LIKE 'N%' OR 
+city == 'Berlin';
+
+.
+SELECT TrackId,
+Name,
+Composer,
+UnitPrice
+FROM tracks
+WHERE UnitPrice BETWEEN 0 AND 1 AND 
+Composer NOT LIKE '%T%';
+
+SELECT InvoiceDate,
+Total,
+avg(Total) 
+FROM invoices
+WHERE InvoiceDate > '2012-06-01' AND 
+InvoiceDate < '2012-07-01'
+GROUP BY InvoiceDate;
+
+SELECT TrackID,
+count(Quantity) 
+FROM invoice_items
+GROUP BY TrackID
+ORDER BY count(Quantity) DESC;
+
+
+
+SELECT ArtistId,
+       Name
+  FROM artists
+ WHERE ArtistId = (
+                      SELECT ArtistId
+                        FROM Album
+                       WHERE AlbumId = (
+                                           SELECT AlbumId
+                                             FROM Track
+                                            WHERE TrackId = (
+                                                                SELECT TrackId
+                                                                  FROM playlist_track
+                                                                 WHERE playlistId NOT IN (
+                                                                           SELECT playlistID
+                                                                             FROM playlist
+                                                                       )
+                                                            )
+                                       )
+                  );
+
+
+
+
+
+SELECT AlbumID, title, count(PlaylistId) FROM albums a
+   INNER JOIN
+   tracks AS t
+   ON a.AlbumId = t.AlbumId
+   INNER JOIN
+   playlist_track p
+   ON t.TrackId = p.TrackId group by a.AlbumID having count(p.PlaylistId)>5     
